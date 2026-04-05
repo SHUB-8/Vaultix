@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: vaultix_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vaultix
+      POSTGRES_PASSWORD: vaultix_secret
+      POSTGRES_DB: vaultix_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - vaultix_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vaultix -d vaultix_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: vaultix_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://vaultix:vaultix_secret@db:5432/vaultix_db
+      SECRET_KEY: vaultix-secret-key
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      DEBUG: "false"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    container_name: vaultix_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  vaultix_pgdata:
+

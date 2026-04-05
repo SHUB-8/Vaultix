@@ -1,0 +1,16 @@
+# Python
+**/__pycache__/**
+
+# Virtual environment
+**/venv/**
+**/.venv/**
+**/.env
+
+# Alembic
+**/alembic/versions/*.pyc
+
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
