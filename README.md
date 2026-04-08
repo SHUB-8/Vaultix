@@ -2,6 +2,7 @@
 
 [🚀 Live Deployment](http://20.255.58.117:80)
 
+[Backend Docs(Swagger UI)](http://20.255.58.117:8000/docs)
 
 Vaultix is a full-stack, role-aware, auditable finance management system built for institutional and organization committees. It tracks income and expenses across events, enforces strict access control through role-based access control (RBAC), and provides macro and micro-level analytics. 
 
